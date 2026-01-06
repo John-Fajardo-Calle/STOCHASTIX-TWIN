@@ -1,0 +1,32 @@
+name: stochastix-twin
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    working_dir: /workspace
+    volumes:
+      - ./:/workspace:cached
+    command: python -m uvicorn backend.api.app:app --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    working_dir: /workspace/frontend
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8000
+    volumes:
+      - ./:/workspace:cached
+      - frontend_node_modules:/workspace/frontend/node_modules
+    command: sh -lc "npm install && npm run dev -- --host 0.0.0.0 --port 5173"
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+volumes:
+  frontend_node_modules:

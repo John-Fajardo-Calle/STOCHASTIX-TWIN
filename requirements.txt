@@ -1,0 +1,10 @@
+# Backend / simulación
+simpy>=4.1
+numpy>=1.23
+matplotlib>=3.7
+seaborn>=0.13
+
+# API
+fastapi>=0.110
+uvicorn[standard]>=0.27
+pydantic>=2.6
